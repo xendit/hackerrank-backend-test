@@ -16,7 +16,7 @@ describe('UserService', () => {
             mockedUserRepositoryInstance.find = jest.fn().mockReturnValueOnce(expectedResults);
 
             const service = new UserService(mockedUserRepositoryInstance);
-            const results = await service.findAll();
+            const results = await service.findAll(1000, 0);
 
             expect(results).toEqual(expectedResults);
         });

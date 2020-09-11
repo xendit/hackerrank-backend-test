@@ -1,8 +1,8 @@
-import { DeleteResult } from 'typeorm';
+import { DeleteResult, FindManyOptions } from 'typeorm';
 import { User } from 'src/entities/user';
 
 export interface IUserRepo {
-    find(): Promise<User[]>;
+    find(opts: FindManyOptions): Promise<User[]>;
     findOne(id: string): Promise<User>;
     findByName(firstName: string, lastName: string): Promise<User[]>;
     save(user: User): Promise<User>;
@@ -17,8 +17,8 @@ export class UserService {
         this.userRepository = userRepository;
     }
 
-    public async findAll(): Promise<User[]> {
-        return this.userRepository.find();
+    public async findAll(limit: number, offset: number): Promise<User[]> {
+        return this.userRepository.find({ take: limit, skip: offset, order: { id: 'DESC' } });
     }
 
     public async findOne(id: string): Promise<User> {

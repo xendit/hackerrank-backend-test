@@ -26,28 +26,54 @@ describe('Users controller integration tests', () => {
     });
 
     describe('GET /api/users', () => {
-        it('returns 400 without headers', async () => {
-            const response = await request(server).get('/api/users');
-            expect(response.status).toBe(400);
-            expect(response.body.error_code).toEqual('API_VALIDATION_ERROR');
-        });
         it('returns 200 with headers', async () => {
-            const response = await request(server).get('/api/users').set(REQUIRED_HEADERS);
-            expect(response.status).toBe(200);
-            expect(response.body).toEqual([]);
+            await request(server)
+                .post('/api/users')
+                .send({
+                    firstName: 'First',
+                    lastName: 'User',
+                    address: 'Indonesia',
+                    isActive: true
+                })
+                .set(REQUIRED_HEADERS);
+
+            await request(server)
+                .post('/api/users')
+                .send({
+                    firstName: 'Second',
+                    lastName: 'User',
+                    address: 'Indonesia',
+                    isActive: true
+                })
+                .set(REQUIRED_HEADERS);
+
+            await request(server)
+                .post('/api/users')
+                .send({
+                    firstName: 'Third',
+                    lastName: 'User',
+                    address: 'Indonesia',
+                    isActive: true
+                })
+                .set(REQUIRED_HEADERS);
+
+            const firstResponse = await request(server).get('/api/users?limit=2&offset=0').set(REQUIRED_HEADERS);
+            expect(firstResponse.status).toBe(200);
+            expect(firstResponse.body.length).toEqual(2);
+            expect(firstResponse.body[0].firstName).toEqual('Third');
+            expect(firstResponse.body[1].firstName).toEqual('Second');
+
+            const secondReponse = await request(server).get('/api/users?limit=2&offset=2').set(REQUIRED_HEADERS);
+            expect(secondReponse.status).toBe(200);
+            expect(secondReponse.body.length).toEqual(1);
+            expect(secondReponse.body[0].firstName).toEqual('First');
+
+            const thirdResponse = await request(server).get('/api/users?limit=2&offset=3').set(REQUIRED_HEADERS);
+            expect(thirdResponse.status).toBe(200);
+            expect(thirdResponse.body.length).toEqual(0);
         });
     });
     describe('POST /api/users', () => {
-        it('returns 400 without headers', async () => {
-            const response = await request(server).post('/api/users').send({
-                firstName: 'John',
-                lastName: 'Doe',
-                address: 'Singapore',
-                isActive: true
-            });
-            expect(response.status).toBe(400);
-            expect(response.body.error_code).toEqual('API_VALIDATION_ERROR');
-        });
         it('returns 400 with missing required fields', async () => {
             const response = await request(server)
                 .post('/api/users')
@@ -92,22 +118,11 @@ describe('Users controller integration tests', () => {
         });
     });
     describe('GET /api/users/:id', () => {
-        it('returns 400 without headers', async () => {
-            const existingUser = await userRepository.save({
-                firstName: 'YC',
-                lastName: 'Toh',
-                address: 'Xendit',
-                isActive: true
-            });
-            const response = await request(server).get(`/api/users/${existingUser.id}`);
-            expect(response.status).toBe(400);
-            expect(response.body.error_code).toEqual('API_VALIDATION_ERROR');
-        });
         it('returns 200', async () => {
             const existingUser = await userRepository.save({
-                firstName: 'YC',
-                lastName: 'Toh',
-                address: 'Xendit',
+                firstName: 'Jane',
+                lastName: 'Doe',
+                address: 'Indonesia',
                 isActive: true
             });
             const response = await request(server).get(`/api/users/${existingUser.id}`).set(REQUIRED_HEADERS);
@@ -120,27 +135,11 @@ describe('Users controller integration tests', () => {
         });
     });
     describe('PUT /api/users/:id', () => {
-        it('returns 400 without headers', async () => {
-            const existingUser = await userRepository.save({
-                firstName: 'YC',
-                lastName: 'Toh',
-                address: 'Xendit',
-                isActive: true
-            });
-            const response = await request(server).put(`/api/users/${existingUser.id}`).send({
-                firstName: 'John',
-                lastName: 'Doe',
-                address: 'Singapore',
-                isActive: true
-            });
-            expect(response.status).toBe(400);
-            expect(response.body.error_code).toEqual('API_VALIDATION_ERROR');
-        });
         it('returns 200', async () => {
             const existingUser = await userRepository.save({
-                firstName: 'YC',
-                lastName: 'Toh',
-                address: 'Xendit',
+                firstName: 'Jane',
+                lastName: 'Doe',
+                address: 'Indonesia',
                 isActive: true
             });
             const response = await request(server)
@@ -163,9 +162,9 @@ describe('Users controller integration tests', () => {
     describe('DELETE /api/users/:id', () => {
         it('returns 200', async () => {
             const existingUser = await userRepository.save({
-                firstName: 'YC',
-                lastName: 'Toh',
-                address: 'Xendit',
+                firstName: 'Jane',
+                lastName: 'Doe',
+                address: 'Indonesia',
                 isActive: true
             });
             const response = await request(server).delete(`/api/users/${existingUser.id}`);

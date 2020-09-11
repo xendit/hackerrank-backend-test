@@ -19,7 +19,7 @@ describe('UsersController', () => {
         it('should return 200 OK', async () => {
             mockedUserServiceInstance.findAll = jest.fn().mockReturnValueOnce([]);
             const controller = new UsersController(mockedUserServiceInstance);
-            await controller.get({} as Request, res);
+            await controller.get(({ query: { limit: 1000, offset: 0 } } as unknown) as Request, res);
 
             expect(res.status).toHaveBeenCalledWith(200);
             expect(res.json).toHaveBeenCalledWith([]);

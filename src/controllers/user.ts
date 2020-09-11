@@ -2,7 +2,7 @@ import { Router, Request, Response } from 'express';
 import { User } from 'src/entities/user';
 
 export interface IUserService {
-    findAll(): Promise<User[]>;
+    findAll(limit: number, offset: number): Promise<User[]>;
     findOne(id: string): Promise<User>;
     create(user: User): Promise<User>;
     update(id: string, updatedUser: User): Promise<User>;
@@ -29,7 +29,7 @@ export class UsersController {
     }
 
     public async get(_: Request, res: Response) {
-        const users = await this.userService.findAll();
+        const users = await this.userService.findAll(Number(_.query.limit), Number(_.query.offset));
         return res.status(200).json(users);
     }
 
