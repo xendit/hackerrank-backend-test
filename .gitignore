@@ -144,3 +144,6 @@ Temporary Items
 
 # dockest generated yaml
 docker-compose.dockest-generated.yml
+
+# DB
+backend-test.db
