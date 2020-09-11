@@ -1,8 +1,8 @@
 import { Request, NextFunction, Response } from 'express';
 import _ from 'lodash';
 import { logger } from 'src/util/logger';
-import { ValidationError } from '@boxbag/xsh-node-openapi-validator';
 import { ErrorCodeMap, ErrorCodes } from 'src/util/errors';
+import { ValidationError } from '../util/openapi-validator';
 
 export const errorHandler = () => {
     // This is an express error handler, need to the 4 variable signature

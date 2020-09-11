@@ -3,10 +3,10 @@ import httpContext from 'express-http-context';
 import bodyParser from 'body-parser';
 import compression from 'compression';
 
-import { OpenApiValidator } from '@boxbag/xsh-node-openapi-validator';
 import { errorHandler } from 'src/middlewares/handle-error-code';
 
 import { init } from 'src/init';
+import { OpenApiValidator } from './util/openapi-validator';
 
 /**
  * Setup the application routes with controllers
