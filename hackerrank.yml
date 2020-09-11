@@ -4,7 +4,7 @@ configuration:
   scoring:
     command: "npm test"
     files:
-      - unit.json
+      - junit.xml
   ide_config:
     default_open_files:
       - src/app.js
