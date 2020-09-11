@@ -16,11 +16,6 @@ class APIUserTasks(TaskSet):
     def api_count(self):
         count_response = self.client.get("/api/count")
 
-    # @seq_task(2)
-    @task
-    def api_feature_flag(self):
-        self.client.get("/api/feature-flag")
-
 
 class APIUser(FastHttpLocust):
     task_set = APIUserTasks

@@ -8,8 +8,6 @@ import { getCustomRepository } from 'typeorm';
 import { connect } from 'src/util/db-connect';
 import { RootController } from 'src/controllers/root';
 import { HealthcheckController } from 'src/controllers/healthcheck';
-import { FeatureFlagService } from 'src/services/feature-flag';
-import { FeatureFlagController } from 'src/controllers/feature-flag';
 import { UserService } from 'src/services/user';
 import { UserRepository } from 'src/repositories/user';
 import { UsersController } from 'src/controllers/user';
@@ -27,13 +25,11 @@ export async function init() {
     // services
     const userService = new UserService(userRepo);
     const errorService = new ErrorService();
-    const featureFlagService = new FeatureFlagService();
 
     // controllers
     const rootController = new RootController();
     const userController = new UsersController(userService);
     const errorController = new ErrorController(errorService);
-    const featureFlagController = new FeatureFlagController(featureFlagService);
     const healthcheckController = new HealthcheckController();
 
     return {
@@ -41,12 +37,10 @@ export async function init() {
 
         userService,
         errorService,
-        featureFlagService,
 
         rootController,
         userController,
         errorController,
-        featureFlagController,
         healthcheckController
     };
 }

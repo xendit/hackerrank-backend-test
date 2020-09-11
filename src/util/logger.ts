@@ -1,5 +1,5 @@
-import { createLogger } from '@boxbag/xsh-node-logger';
-
-export const logger = createLogger({
-    options: { prettyPrint: process.env.NODE_ENV !== 'production' }
-});
+export const logger = {
+    info: (context: any, message?: string) => console.log(context, message),
+    warn: (context: any, message?: string) => console.log(context, message),
+    error: (err: Error, message?: string) => console.error(err, message)
+};

@@ -21,18 +21,6 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Root'
-  /api/feature-flag:
-    get:
-      tags:
-        - feature-flag
-      operationId: getFeatureFlag
-      responses:
-        200:
-          description: OK
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/FeatureFlag'
   /api/users:
     get:
       tags:
@@ -245,18 +233,6 @@ components:
         message:
           type: string
           example: 'OK'
-    FeatureFlag:
-      type: object
-      required:
-        - key
-        - value
-      properties:
-        key:
-          type: string
-          example: 'test-feature-flag'
-        value:
-          type: boolean
-          example: false
     User:
       type: object
       required:
