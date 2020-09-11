@@ -1,0 +1,14 @@
+version: 1.0
+configuration:
+  has_webserver: true
+  scoring:
+    command: "npm test"
+    files:
+      - unit.json
+  ide_config:
+    default_open_files:
+      - src/app.js
+    project_menu:
+      run: npm start
+      install: npm install
+      test: npm test

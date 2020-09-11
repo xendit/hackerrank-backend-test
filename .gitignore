@@ -147,3 +147,6 @@ docker-compose.dockest-generated.yml
 
 # DB
 backend-test.db
+
+# Test results
+unit.json
