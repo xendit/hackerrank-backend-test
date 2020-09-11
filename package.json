@@ -67,7 +67,7 @@
         "start": "node ./dist/src/server.js",
         "lint": "eslint --ignore-path .eslintignore --ext .ts,.js .",
         "lint:fix": "eslint --ignore-path .eslintignore --ext .ts,.js --fix .",
-        "test": "cross-env NODE_ENV=test jest --verbose --runInBand --json --outputFile=unit.json ./tests",
+        "test": "NODE_ENV=test jest --verbose --runInBand --json --outputFile=unit.json ./tests",
         "build": "rm -rf dist && tsc",
         "migration:create": "ts-node -r ./src/module-alias.ts ./node_modules/typeorm/cli.js --config src/ormconfig-cli.ts migration:create",
         "migration:generate": "ts-node -r ./src/module-alias.ts ./node_modules/typeorm/cli.js --config src/ormconfig-cli.ts migration:generate",
