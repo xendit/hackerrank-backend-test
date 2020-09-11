@@ -12,7 +12,6 @@
         "npm": ">=6.9.0"
     },
     "dependencies": {
-        "@boxbag/xsh-node-tracing": "0.0.1",
         "ajv": "^6.10.2",
         "bluebird": "^3.7.2",
         "body-parser": "^1.19.0",

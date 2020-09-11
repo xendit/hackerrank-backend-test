@@ -1,6 +1,5 @@
 // This needs to be imported before everything else.
 // eslint-disable-next-line import/order, @typescript-eslint/no-unused-vars
-import { tracer } from './util/tracer';
 
 import 'reflect-metadata'; // for TypeORM
 import { getCustomRepository } from 'typeorm';
