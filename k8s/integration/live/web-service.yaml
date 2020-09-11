@@ -1,0 +1,146 @@
+---
+  # Spec to specify a ConfigMap where you can specify configuration values that are accesible in the pod container
+  apiVersion: v1
+  kind: ConfigMap
+  metadata:
+    namespace: xendit-integration
+    name: hackerank-backend-test-live
+  data:
+    NODE_ENV: "integration"
+    APP_ENV: "integration"
+    APP_MODE: "live"
+    SERVICE_NAME: "hackerank-backend-test-live"
+    TRACER_ENV: "integration"
+
+    PGDATABASE: "hackerank-backend-test-live"
+
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  namespace: xendit-integration
+  name: hackerank-backend-test-live
+  labels:
+    app: hackerank-backend-test-live
+spec:
+  selector:
+    matchLabels:
+      app:  hackerank-backend-test-live
+  replicas: 2
+  minReadySeconds: 15
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxUnavailable: 1
+      maxSurge: 1
+  template:
+    metadata:
+      labels:
+        app: hackerank-backend-test-live
+        namespace: xendit-integration
+    spec:
+      containers:
+        - image: us.gcr.io/xendit-169205/xendit/hackerank-backend-test:VERSION
+          imagePullPolicy: Always
+          envFrom:
+            - configMapRef:
+                name: hackerank-backend-test-live
+          env:
+            - name: LAUNCH_DARKLY_SDK_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: launch-darkly-key
+                  key: key
+            - name: PGHOST
+              valueFrom:
+                secretKeyRef:
+                  name: postgres
+                  key: hostname
+            - name: PGPORT
+              valueFrom:
+                secretKeyRef:
+                  name: postgres
+                  key: port
+            - name: PGUSER
+              valueFrom:
+                secretKeyRef:
+                  name: postgres
+                  key: username
+            - name: PGPASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: postgres
+                  key: password
+            - name: PGROHOST
+              valueFrom:
+                secretKeyRef:
+                  name: postgres
+                  key: hostname
+            - name: PGROPORT
+              valueFrom:
+                secretKeyRef:
+                  name: postgres
+                  key: port
+            - name: PGROUSER
+              valueFrom:
+                secretKeyRef:
+                  name: postgres
+                  key: username
+            - name: PGROPASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: postgres
+                  key: password
+            - name: RABBITMQ_USERNAME
+              valueFrom:
+                secretKeyRef:
+                  name: rabbitmq
+                  key: username
+            - name: RABBITMQ_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: rabbitmq
+                  key: password
+            - name: RABBITMQ_HOSTNAME
+              valueFrom:
+                secretKeyRef:
+                  name: rabbitmq
+                  key: hostname
+          name: hackerank-backend-test-live
+          ports:
+            - containerPort: 3000
+          resources:
+            requests:
+              memory: "64Mi"
+              cpu: "250m"
+            limits:
+              memory: "128Mi"
+              cpu: "500m"
+          livenessProbe:
+            httpGet:
+              path: /healthcheck/liveness
+              port: 3000
+            timeoutSeconds: 15
+            periodSeconds: 30
+          readinessProbe:
+            httpGet:
+              path: /healthcheck/readiness
+              port: 3000
+            timeoutSeconds: 15
+            periodSeconds: 30
+
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+  namespace: xendit-integration
+  name: hackerank-backend-test-live
+spec:
+  type: ClusterIP
+  ports:
+    - name: http
+      port: 80
+      targetPort: 3000
+  selector:
+    app: hackerank-backend-test-live

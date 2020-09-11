@@ -1,0 +1,73 @@
+name: hackerank-backend-test
+namespace: cashpay-live
+pci_scope: non_pci
+environment: production
+mode: live
+aws_account: 420361828844
+chamber:
+  enabled: true
+  chamber_region: us-west-2
+  kms_key_alias: parameter_store_key
+  paths:
+  - "production/live/hackerank-backend-test"
+
+shared_env:
+  PROJECT: "trident"
+
+image:
+  repository: 420361828844.dkr.ecr.ap-southeast-1.amazonaws.com/xendit/hackerank-backend-test
+  pullPolicy: Always
+
+datadog:
+  apm:
+    enabled: true
+
+server:
+  enabled: true
+  public:
+    enabled: false
+  traefik:
+    enabled: true
+    hosts:
+      - hackerank-backend-test-live.tidnex.com
+  replicas: 2
+  command: "node dist/src/server.js"
+  env:
+    NODE_ENV: "production"
+    APP_ENV: "production"
+    APP_MODE: "live"
+    SERVICE_NAME: "hackerank-backend-test"
+    TRACER_ENV: "production"
+  resources:
+    requests:
+      cpu: 201m
+      memory: 300Mi
+    limits:
+      cpu: 1
+      memory: 4096Mi
+  livenessProbe:
+    type: http
+    port: 3000
+    path: /healthcheck/liveness
+  readinessProbe:
+    type: http
+    port: 3000
+    path: /healthcheck/readiness
+  service:
+    port: 80
+    targetPort: 3000
+  autoscaling:
+    enabled: true
+    min: 2
+    max: 4
+    metrics:
+      cpu:
+        targetAverageUtilization: 150
+      memory:
+        targetAverageUtilization: 150
+
+worker:
+  enabled: false
+
+cron:
+  enabled: false

@@ -1,0 +1,117 @@
+{
+    "name": "hackerank-backend-test",
+    "version": "1.0.0",
+    "description": "Hackerrank backend test",
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/xendit/hackerank-backend-test"
+    },
+    "main": "index.js",
+    "engines": {
+        "node": ">=10.16.3",
+        "npm": ">=6.9.0"
+    },
+    "dependencies": {
+        "@boxbag/xendit-utilities": "^5.0.12",
+        "@boxbag/xsh-node-logger": "^0.0.6",
+        "@boxbag/xsh-node-openapi-validator": "^1.1.1",
+        "@boxbag/xsh-node-tracing": "0.0.1",
+        "ajv": "^6.10.2",
+        "bluebird": "^3.7.2",
+        "body-parser": "^1.19.0",
+        "compression": "^1.7.4",
+        "dd-trace": "^0.23.0",
+        "express": "^4.17.1",
+        "express-http-context": "^1.2.3",
+        "express-openapi-validator": "^3.12.7",
+        "express-pino-logger": "^5.0.0",
+        "joi": "^14.3.1",
+        "launchdarkly-node-server-sdk": "^5.13.1",
+        "lodash": "^4.17.15",
+        "module-alias": "^2.2.2",
+        "path": "^0.12.7",
+        "pg": "^8.2.1",
+        "pino": "^6.2.1",
+        "reflect-metadata": "^0.1.13",
+        "source-map-support": "^0.5.19",
+        "typeorm": "^0.2.22"
+    },
+    "devDependencies": {
+        "@types/bluebird": "^3.5.29",
+        "@types/compression": "^1.0.1",
+        "@types/connect-datadog": "0.0.4",
+        "@types/errorhandler": "1.5.0",
+        "@types/express": "^4.17.6",
+        "@types/express-pino-logger": "^4.0.2",
+        "@types/jest": "^25.2.1",
+        "@types/joi": "^14.3.4",
+        "@types/lodash": "^4.14.144",
+        "@types/module-alias": "^2.0.0",
+        "@types/node": "^14.0.22",
+        "@types/pg": "^7.11.2",
+        "@types/supertest": "^2.0.8",
+        "@typescript-eslint/eslint-plugin": "^2.30.0",
+        "@typescript-eslint/parser": "^2.30.0",
+        "cross-env": "^7.0.2",
+        "dockest": "^2.0.2",
+        "dotenv": "^8.2.0",
+        "eslint": "^6.7.2",
+        "eslint-config-airbnb-typescript": "^6.0.0",
+        "eslint-config-prettier": "^6.5.0",
+        "eslint-import-resolver-alias": "^1.1.2",
+        "eslint-plugin-filenames": "^1.3.2",
+        "eslint-plugin-import": "^2.19.1",
+        "eslint-plugin-jest": "^23.9.0",
+        "eslint-plugin-prettier": "^3.1.2",
+        "husky": "^4.2.5",
+        "jest": "^25.5.4",
+        "jest-extended": "^0.11.2",
+        "lint-staged": "^10.2.11",
+        "pino-pretty": "^4.0.0",
+        "prettier": "^2.0.5",
+        "supertest": "^4.0.2",
+        "swagger-parser": "^9.0.1",
+        "ts-jest": "^25.4.0",
+        "ts-node": "^8.10.0",
+        "ts-node-dev": "^1.0.0-pre.44",
+        "typescript": "^3.7.5",
+        "tslib": "1.11.2"
+    },
+    "scripts": {
+        "start": "node ./dist/src/server.js",
+        "start:dev": "tsnd -r dotenv/config --watch .env,./src/**/*.ts --respawn src/server.ts",
+        "start-example-worker": "ts-node -r dotenv/config src/workers/example-worker.ts",
+        "start-example-cron": "ts-node -r dotenv/config src/crons/example-cron.ts",
+        "lint": "eslint --ignore-path .eslintignore --ext .ts,.js .",
+        "lint:fix": "eslint --ignore-path .eslintignore --ext .ts,.js --fix .",
+        "test": "cross-env NODE_ENV=test jest --verbose --runInBand ./tests",
+        "test:dockest": "cross-env NODE_ENV=test ts-node ./dockest.ts",
+        "test-watch": "cross-env NODE_ENV=test jest -i --watch",
+        "build": "rm -rf dist && tsc",
+        "migration:create": "ts-node -r ./src/module-alias.ts ./node_modules/typeorm/cli.js --config src/ormconfig-cli.ts migration:create",
+        "migration:generate": "ts-node -r ./src/module-alias.ts ./node_modules/typeorm/cli.js --config src/ormconfig-cli.ts migration:generate",
+        "migration:run": "ts-node -r ./src/module-alias.ts ./node_modules/typeorm/cli.js --config src/ormconfig-cli.ts migration:run",
+        "migration:revert": "ts-node -r ./src/module-alias.ts ./node_modules/typeorm/cli.js --config src/ormconfig-cli.ts migration:revert",
+        "format": "prettier --config .prettierrc.js --write '*.{ts,js,json}' './src/**/*.{ts,js,json}' './tests/**/*.{ts,js,json}'",
+        "generate-error-map": "ts-node src/cmd/generate-error-map generate",
+        "generate-client:node": "openapi-generator generate --enable-post-process-file -i ./docs/openapi.yaml -g typescript-axios --additional-properties=modelPropertyNaming=original,npmName=@boxbag/hackerank-backend-test-client -o clients/node && sed -i '' 's+./dist+dist+g' clients/node/package.json"
+    },
+    "husky": {
+        "hooks": {
+            "pre-commit": "lint-staged"
+        }
+    },
+    "lint-staged": {
+        "*.{ts,js,json}": [
+            "prettier --write",
+            "git add"
+        ],
+        "*.{ts,js}": [
+            "eslint",
+            "git add"
+        ]
+    },
+    "author": "xendit",
+    "license": "UNLICENSED",
+    "private": true
+}
