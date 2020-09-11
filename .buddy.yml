@@ -1,0 +1,39 @@
+- pipeline: "Build and test on every commit"
+  trigger_mode: "ON_EVERY_PUSH"
+  ref_name: "(^((?!master$).)*$)"
+  ref_type: "WILDCARD"
+  trigger_condition: "ALWAYS"
+  actions:
+  - action: "Execute: npm run lint, npm test, npm run build"
+    type: "BUILD"
+    working_directory: "/buddy/hackerank-backend-test"
+    docker_image_name: "library/node"
+    docker_image_tag: "10.16.3"
+    execute_commands:
+    - "export PGPORT=5432"
+    - "export PGHOST=postgres"
+    - "export PGPASSWORD=test"
+    - "export PGDATABASE=test"
+    - "export LC_ALL=C.UTF-8"
+    - "export LANG=C.UTF-8"
+    - "cp .npmrc.example .npmrc"
+    - 'echo -ne "\n//registry.npmjs.org/:_authToken=${NPM_TOKEN}" >> .npmrc'
+    - "npm install"
+    - "npm run lint"
+    - "npm test"
+    - "npm run build"
+    - "rm -f .npmrc"
+    setup_commands:
+    - "npm install -g gulp grunt-cli"
+    services:
+    - type: "POSTGRE_SQL"
+      version: "10.7"
+      connection:
+        host: "postgres"
+        port: 5432
+        user: "test"
+        password: "test"
+        db: "test"
+    mount_filesystem_path: "/buddy/hackerank-backend-test"
+    shell: "BASH"
+    trigger_condition: "ALWAYS"

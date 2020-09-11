@@ -1,0 +1,11 @@
+{
+    "eslint.validate": ["javascript", "javascriptreact", "typescript", "typescriptreact"],
+    "eslint.options": {
+        "configFile": ".eslintrc.js"
+    },
+    "prettier.configPath": ".prettierrc.js",
+    "python.pythonPath": "venv/bin/python3.7",
+    "editor.codeActionsOnSave": {
+        "source.fixAll.eslint": true
+    }
+}
