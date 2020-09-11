@@ -24,6 +24,7 @@
         "pg": "^8.2.1",
         "reflect-metadata": "^0.1.13",
         "source-map-support": "^0.5.19",
+        "sqlite3": "^5.0.0",
         "typeorm": "^0.2.22"
     },
     "devDependencies": {
@@ -65,13 +66,10 @@
     "scripts": {
         "start": "node ./dist/src/server.js",
         "start:dev": "tsnd -r dotenv/config --watch .env,./src/**/*.ts --respawn src/server.ts",
-        "start-example-worker": "ts-node -r dotenv/config src/workers/example-worker.ts",
-        "start-example-cron": "ts-node -r dotenv/config src/crons/example-cron.ts",
         "lint": "eslint --ignore-path .eslintignore --ext .ts,.js .",
         "lint:fix": "eslint --ignore-path .eslintignore --ext .ts,.js --fix .",
         "test": "cross-env NODE_ENV=test jest --verbose --runInBand ./tests",
         "test:dockest": "cross-env NODE_ENV=test ts-node ./dockest.ts",
-        "test-watch": "cross-env NODE_ENV=test jest -i --watch",
         "build": "rm -rf dist && tsc",
         "migration:create": "ts-node -r ./src/module-alias.ts ./node_modules/typeorm/cli.js --config src/ormconfig-cli.ts migration:create",
         "migration:generate": "ts-node -r ./src/module-alias.ts ./node_modules/typeorm/cli.js --config src/ormconfig-cli.ts migration:generate",

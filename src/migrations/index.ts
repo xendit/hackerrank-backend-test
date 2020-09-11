@@ -1,4 +1,3 @@
-import { Init1571751456489 } from 'src/migrations/1571751456489-init';
-import { UserAddAddress1571753391008 } from 'src/migrations/1571753391008-user-add-address';
+import { createUser1599816419085 } from './1599816419085-create-user';
 
-export const migrations = [Init1571751456489, UserAddAddress1571753391008];
+export const migrations = [createUser1599816419085];
