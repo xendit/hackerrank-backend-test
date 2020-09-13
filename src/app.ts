@@ -13,11 +13,10 @@ import { OpenApiValidator } from './util/openapi-validator';
  * @param app
  */
 async function setupRoutes(app: Application) {
-    const { rootController, userController, errorController, healthcheckController } = await init();
+    const { rootController, userController, healthcheckController } = await init();
 
     app.use('/api/users', userController.getRouter());
     app.use('/healthcheck', healthcheckController.getRouter());
-    app.use('/errors', errorController.getRouter());
     app.use('/', rootController.getRouter());
 }
 

@@ -12,7 +12,14 @@ module.exports = {
     moduleDirectories: ['node_modules'],
     modulePathIgnorePatterns: ['directoryNameToIgnore'],
     collectCoverage: true,
-    collectCoverageFrom: ['!src/**/index.ts', '!src/routes.ts', 'src/**/*.ts'],
+    collectCoverageFrom: [
+        '!src/**/index.ts',
+        '!src/routes.ts',
+        'src/services/*.ts',
+        'src/controllers/**/*.ts',
+        'src/entities/**/*.ts',
+        'src/repositories/**/*.ts'
+    ],
     coveragePathIgnorePatterns: ['/node_modules/', 'dist/'],
     coverageReporters: ['json', 'json-summary', 'lcov', 'text', 'text-summary', 'html'],
     testEnvironment: 'node',

@@ -18,11 +18,10 @@ const {
 
     NODE_ENV
 } = process.env;
-const isProduction = NODE_ENV === 'production';
 
 export const OrmConfig = {
     // synchronize: !isProduction, // npm run migration:generate -- <MigrationName>
-    logging: !isProduction,
+    logging: false,
     entities,
     migrations,
     subscribers: [],
