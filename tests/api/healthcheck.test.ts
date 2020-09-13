@@ -21,10 +21,10 @@ describe('Healthcheck Integration tests', () => {
         });
     });
 
-    describe('/healthcheck/donotexist', () => {
-        it('returns 404', async () => {
-            const response = await supertest(server).get('/healthcheck/donotexist');
-            expect(response.status).toBe(404);
+    describe('/healthcheck/readiness', () => {
+        it('returns 200', async () => {
+            const response = await supertest(server).get('/healthcheck/readiness');
+            expect(response.status).toBe(200);
         });
     });
 });
