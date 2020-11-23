@@ -119,31 +119,41 @@ describe('Users controller integration tests', () => {
     });
     describe('GET /api/users/:id', () => {
         it('returns 200', async () => {
-            const existingUser = await userRepository.save({
-                firstName: 'Jane',
-                lastName: 'Doe',
-                address: 'Indonesia',
-                isActive: true
-            });
-            const response = await request(server).get(`/api/users/${existingUser.id}`).set(REQUIRED_HEADERS);
+            const existingUserResponse = await request(server)
+                .post('/api/users')
+                .send({
+                    firstName: 'Jane',
+                    lastName: 'Doe',
+                    address: 'Indonesia',
+                    isActive: true
+                })
+                .set(REQUIRED_HEADERS);
+
+            const response = await request(server)
+                .get(`/api/users/${existingUserResponse.body.id}`)
+                .set(REQUIRED_HEADERS);
             expect(response.status).toBe(200);
             expect(response.body.id).toBeDefined();
-            expect(response.body.firstName).toEqual(existingUser.firstName);
-            expect(response.body.lastName).toEqual(existingUser.lastName);
-            expect(response.body.address).toEqual(existingUser.address);
-            expect(response.body.isActive).toEqual(existingUser.isActive);
+            expect(response.body.firstName).toEqual(existingUserResponse.body.firstName);
+            expect(response.body.lastName).toEqual(existingUserResponse.body.lastName);
+            expect(response.body.address).toEqual(existingUserResponse.body.address);
+            expect(response.body.isActive).toEqual(existingUserResponse.body.isActive);
         });
     });
     describe('PUT /api/users/:id', () => {
         it('returns 200', async () => {
-            const existingUser = await userRepository.save({
-                firstName: 'Jane',
-                lastName: 'Doe',
-                address: 'Indonesia',
-                isActive: true
-            });
+            const existingUserResponse = await request(server)
+                .post('/api/users')
+                .send({
+                    firstName: 'Jane',
+                    lastName: 'Doe',
+                    address: 'Indonesia',
+                    isActive: true
+                })
+                .set(REQUIRED_HEADERS);
+
             const response = await request(server)
-                .put(`/api/users/${existingUser.id}`)
+                .put(`/api/users/${existingUserResponse.body.id}`)
                 .send({
                     firstName: 'John',
                     lastName: 'Doe',
@@ -161,13 +171,17 @@ describe('Users controller integration tests', () => {
     });
     describe('DELETE /api/users/:id', () => {
         it('returns 200', async () => {
-            const existingUser = await userRepository.save({
-                firstName: 'Jane',
-                lastName: 'Doe',
-                address: 'Indonesia',
-                isActive: true
-            });
-            const response = await request(server).delete(`/api/users/${existingUser.id}`);
+            const existingUserResponse = await request(server)
+                .post('/api/users')
+                .send({
+                    firstName: 'Jane',
+                    lastName: 'Doe',
+                    address: 'Indonesia',
+                    isActive: true
+                })
+                .set(REQUIRED_HEADERS);
+
+            const response = await request(server).delete(`/api/users/${existingUserResponse.body.id}`);
             expect(response.status).toBe(200);
         });
     });
