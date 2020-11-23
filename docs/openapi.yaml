@@ -5,7 +5,7 @@ info:
   description: 'Hackerrank backend test'
 servers:
   - description: SwaggerHub API Auto Mocking
-    url: 'https://localhost:80
+    url: 'https://localhost:80'
   - description: Local development
     url: 'http://localhost:3000'
 paths:
