@@ -1,28 +1,20 @@
 import request from 'supertest';
-import { getCustomRepository, Repository, getConnection } from 'typeorm';
+import { getConnection } from 'typeorm';
 
 import { createApp } from 'src/app';
-import { UserRepository } from 'src/repositories/user';
-import { User } from 'src/entities/user';
 
 describe('Users controller integration tests', () => {
     let server: Express.Application;
-    let userRepository: Repository<User>;
 
     const REQUIRED_HEADERS = { 'client-version': 'v0.0.0', 'team-name': 'test', 'service-name': 'local' };
     beforeAll(async () => {
         server = await createApp();
         await getConnection().dropDatabase();
         await getConnection().runMigrations();
-        userRepository = getCustomRepository(UserRepository);
     });
 
     afterAll(async () => {
         await getConnection('default').close();
-    });
-
-    beforeEach(async () => {
-        await userRepository.clear();
     });
 
     describe('GET /api/users', () => {
