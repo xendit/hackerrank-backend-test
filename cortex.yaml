@@ -1,0 +1,14 @@
+openapi: 3.0.1
+info:
+  title: hackerrank-backend-test
+  description: hackerrank-backend-test
+  x-cortex-git:
+    github:
+      repository: xendit/hackerrank-backend-test
+  x-cortex-owners:
+  - type: GROUP
+    name: xendit/hackerrank-backend-test
+  x-cortex-link:
+  - name: OpenAPI spec
+    type: OPENAPI
+    url: docs/openapi.yaml
