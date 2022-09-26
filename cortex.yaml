@@ -5,6 +5,7 @@ info:
   x-cortex-git:
     github:
       repository: xendit/hackerrank-backend-test
+  x-cortex-tag: hackerrank-backend-test
   x-cortex-owners:
   - type: GROUP
     name: xendit/hackerrank-backend-test
