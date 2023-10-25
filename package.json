@@ -19,7 +19,7 @@
         "express": "^4.17.1",
         "express-http-context": "^1.2.3",
         "express-openapi-validator": "^3.12.7",
-        "lodash": "^4.17.15",
+        "lodash": "^4.17.21",
         "module-alias": "^2.2.2",
         "pg": "^8.2.1",
         "reflect-metadata": "^0.1.13",
